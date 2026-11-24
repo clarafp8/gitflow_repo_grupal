@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustes - PPS App</title>
+    <style>
+        /* Estilos Globales y Paleta de Colores Renovada */
+        :root {
+            --bg-principal: #f3f4f6;
+            --bg-card: #ffffff;
+            --texto-oscuro: #1f2937;
+            --texto-mutado: #6b7280;
+            --borde: #e5e7eb;
+
+            /* Colores de marca y acentos */
+            --primario: #6366f1;
+            --primario-hover: #4f46e5;
+            --primario-suave: #eeefff;
+
+            /* Colores semánticos para métricas y estados */
+            --exito: #10b981;
+            --exito-bg: #ecfdf5;
+            --alerta: #f59e0b;
+            --alerta-bg: #fffbe6;
+            --info: #3b82f6;
+            --info-bg: #eff6ff;
+            --peligro: #ef4444;
+            --peligro-bg: #fef2f2;
+
+            --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-oscuro);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Menú Lateral (Sidebar) */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--borde);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem 1.25rem;
+            box-shadow: var(--sombra-sm);
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primario);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .menu-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .menu-links a {
+            text-decoration: none;
+            color: var(--texto-mutado);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .menu-links a svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .menu-links a:hover {
+            background-color: var(--primario-suave);
+            color: var(--primario);
+        }
+
+        .menu-links a.active {
+            background-color: var(--primario);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+        }
+
+        .logout-btn {
+            text-decoration: none;
+            color: var(--peligro);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 1px solid var(--borde);
+            background-color: var(--peligro-bg);
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--peligro);
+            color: #ffffff;
+        }
+
+        /* Contenido Principal */
+        .main-content {
+            flex: 1;
+            padding: 2rem 3rem 5.5rem 3rem;
+            overflow-y: auto;
+        }
+
+        /* Barra Superior (Header) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--borde);
+            gap: 1rem;
+        }
+
+        .bienvenida h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--texto-oscuro);
+            margin-bottom: 0.25rem;
+        }
+
+        .bienvenida p {
+            color: var(--texto-mutado);
+            font-size: 0.95rem;
+        }
+
+        .usuario-perfil {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            padding: 0.4rem 0.8rem 0.4rem 0.4rem;
+            border-radius: 30px;
+            border: 1px solid var(--borde);
+            box-shadow: var(--sombra-sm);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primario), #a855f7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .usuario-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .usuario-nombre {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .usuario-rol {
+            font-size: 0.75rem;
+            color: var(--texto-mutado);
+        }
+
+        /* Layout de Ajustes */
+        .ajustes-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            max-width: 960px;
+        }
+
+        .seccion-ajuste {
+            background-color: var(--bg-card);
+            border: 1px solid var(--borde);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--sombra-sm);
+        }
+
+        .seccion-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--borde);
+        }
+
+        .seccion-header h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--texto-oscuro);
+            margin-bottom: 0.2rem;
+        }
+
+        .seccion-header p {
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+        }
+
+        /* Formularios y Campos */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .form-grupo.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-grupo label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--borde);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--texto-oscuro);
+            background-color: var(--bg-principal);
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            background-color: var(--bg-card);
+            border-color: var(--primario);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        /* Filas de Preferencias / Switches */
+        .preferencias-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .preferencia-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--borde);
+            background-color: var(--bg-principal);
+        }
+
+        .preferencia-texto p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+        }
+
+        .preferencia-texto span {
+            font-size: 0.8rem;
+            color: var(--texto-mutado);
+        }
+
+        /* Interruptor (Switch) accesible */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #cbd5e1;
+            transition: 0.25s;
+            border-radius: 34px;
+        }
+
+        .slider::before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #ffffff;
+            transition: 0.25s;
+            border-radius: 50%;
+            box-shadow: var(--sombra-sm);
+        }
+
+        .switch input:checked + .slider {
+            background-color: var(--primario);
+        }
+
+        .switch input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+
+        /* Acciones de formulario */
+        .form-acciones {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--borde);
+        }
+
+        .btn {
+            padding: 0.65rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primario {
+            background-color: var(--primario);
+            color: #ffffff;
+        }
+
+        .btn-primario:hover {
+            background-color: var(--primario-hover);
+        }
+
+        .btn-secundario {
+            background-color: var(--bg-card);
+            color: var(--texto-oscuro);
+            border-color: var(--borde);
+        }
+
+        .btn-secundario:hover {
+            background-color: var(--bg-principal);
+        }
+
+        /* Zona de Peligro */
+        .zona-peligro {
+            border-color: #fecaca;
+        }
+
+        .peligro-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: var(--peligro-bg);
+            border: 1px solid #fecaca;
+        }
+
+        .peligro-texto p {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--peligro);
+        }
+
+        .peligro-texto span {
+            font-size: 0.8rem;
+            color: var(--texto-mutado);
+        }
+
+        .btn-peligro {
+            background-color: var(--peligro);
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .btn-peligro:hover {
+            background-color: #dc2626;
+        }
+
+        /* Footer */
+        .footer-delgado {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 260px;
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--borde);
+            padding: 0.8rem 3rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+            z-index: 5;
+        }
+
+        /* Adaptabilidad para Móviles */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--borde);
+                padding: 1rem;
+            }
+
+            .menu-links {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .menu-links a span {
+                display: none;
+            }
+
+            .logout-btn {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1.5rem 1.5rem 5rem 1.5rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .peligro-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-delgado {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Menú de Navegación Lateral -->
+    <aside class="sidebar">
+        <div>
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>PPS App</span>
+            </div>
+            <ul class="menu-links">
+                <li>
+                    <a href="index.html">
+                        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        <span>Proyectos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        <span>Tareas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span>Estadísticas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="active">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span>Ajustes</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <a href="#" class="logout-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Cerrar Sesión</span>
+        </a>
+    </aside>
+
+    <!-- Contenedor del Contenido Principal -->
+    <main class="main-content">
+
+        <!-- Cabecera -->
+        <header class="header">
+            <div class="bienvenida">
+                <h1>Ajustes de cuenta</h1>
+                <p>Administra tu perfil, notificaciones y preferencias del espacio de trabajo.</p>
+            </div>
+
+            <!-- Usuario Perfil con Rol -->
+            <div class="usuario-perfil">
+                <div class="avatar">JP</div>
+                <div class="usuario-info">
+                    <span class="usuario-nombre">Juan Pérez</span>
+                    <span class="usuario-rol">Administrador</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Banner de Error Simulado -->
+        <div style="background-color: var(--peligro-bg); border: 1px solid #fecaca; color: var(--peligro); padding: 1rem 1.25rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 500;">
+            <span>⚠️ Error 500: No se pudieron sincronizar las preferencias con el servidor. Inténtalo de nuevo más tarde.</span>
+            <strong style="cursor: pointer;">Reintentar</strong>
+        </div>
+
+        <!-- Contenido de Ajustes -->
+        <div class="ajustes-grid">
+
+            <!-- Perfil General -->
+            <section class="seccion-ajuste">
+                <div class="seccion-header">
+                    <h2>Información del perfil</h2>
+                    <p>Actualiza tus datos visibles dentro de PPS App y en el historial de actividad.</p>
+                </div>
+
+                <form>
+                    <div class="form-grid">
+                        <div class="form-grupo">
+                            <label for="nombre">Nombre completo</label>
+                            <input type="text" id="nombre" class="form-control" value="Juan Pérez">
+                        </div>
+
+                        <div class="form-grupo">
+                            <label for="usuario">Nombre de usuario</label>
+                            <input type="text" id="usuario" class="form-control" value="@jperez">
+                        </div>
+
+                        <div class="form-grupo">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" class="form-control" value="juan.perez@ppsapp.es">
+                        </div>
+
+                        <div class="form-grupo">
+                            <label for="rol">Rol en el equipo</label>
+                            <select id="rol" class="form-control">
+                                <option value="admin" selected>Administrador</option>
+                                <option value="dev">Desarrollador</option>
+                                <option value="revisor">Revisor</option>
+                            </select>
+                        </div>
+
+                        <div class="form-grupo full-width">
+                            <label for="bio">Biografía / Notas de trabajo</label>
+                            <textarea id="bio" class="form-control" placeholder="Escribe una breve descripción...">Coordinador de ramas Gitflow y revisión de entregas del equipo.</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-acciones">
+                        <button type="reset" class="btn btn-secundario">Restablecer</button>
+                        <button type="submit" class="btn btn-primario">Guardar cambios</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Notificaciones y Preferencias -->
+            <section class="seccion-ajuste">
+                <div class="seccion-header">
+                    <h2>Notificaciones y preferencias</h2>
+                    <p>Elige qué avisos deseas recibir sobre proyectos, tareas y pull requests.</p>
+                </div>
+
+                <div class="preferencias-lista">
+                    <div class="preferencia-item">
+                        <div class="preferencia-texto">
+                            <p>Avisos por correo en Pull Requests</p>
+                            <span>Recibe un correo cuando te asignen una revisión o se fusione una rama.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preferencia-item">
+                        <div class="preferencia-texto">
+                            <p>Recordatorio de tareas pendientes diarias</p>
+                            <span>Resumen matutino con las tareas que requieren atención hoy.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="preferencia-item">
+                        <div class="preferencia-texto">
+                            <p>Sonidos de notificación en el panel</p>
+                            <span>Reproduce un aviso sutil al recibir mensajes nuevos.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Zona de Peligro -->
+            <section class="seccion-ajuste zona-peligro">
+                <div class="seccion-header">
+                    <h2>Zona de peligro</h2>
+                    <p>Acciones sensibles relacionadas con el acceso y los datos de tu cuenta.</p>
+                </div>
+
+                <div class="peligro-item">
+                    <div class="peligro-texto">
+                        <p>Eliminar cuenta</p>
+                        <span>Esta acción eliminará tu perfil y desvinculará tu actividad pendiente.</span>
+                    </div>
+                    <button type="button" class="btn btn-peligro">Eliminar cuenta</button>
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="footer-delgado">
+            PPS - Actividad con Gitflow Grupal - 2026
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
